@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# ML Models
+Multiple Disease Detection Project/Models/*.pt
+Multiple Disease Detection Project/Models/*.h5
+Multiple Disease Detection Project/Models/*.keras
+
+# Datasets
+Multiple Disease Detection Project/Datasets
+Multiple Disease Detection Project/datasets
+
+# React
+frontend/node_modules/
+frontend/build/
+
+# Spring Boot
+backend/target/
+
+# OS files
+.DS_Store
+Thumbs.db
