@@ -18,7 +18,7 @@ frontend/node_modules/
 frontend/build/
 
 # Spring Boot
-backend/target/
+Latest_try/target/
 
 # OS files
 .DS_Store
