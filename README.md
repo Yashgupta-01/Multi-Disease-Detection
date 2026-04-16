@@ -3,3 +3,6 @@ A healthcare system that detects multiple diseases (Tuberculosis, Brain Tumor, R
 
 Federated Learning files will be updated soon !!
 ...
+skin model is retrained to remove overfitting, and now it reaches to 91% accuracy, 
+next is put this into backend
+then applyting security
