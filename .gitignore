@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# PyTorch models (use Git LFS or download from cloud on start if deploying)
+*.pt
+*.pth
+*.keras
+*.h5
+
+# OS generated files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedAI - Multi Disease Detection</title>
+    <meta name="description" content="AI-powered detection system for Tuberculosis, Brain Tumors, Skin Cancer, and Eye Diseases.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <h1>MedAI Diagnostics</h1>
+            </div>
+            <p class="subtitle">AI-Powered Multi-Disease Detection System</p>
+        </header>
+
+        <main class="card">
+            <div class="form-group">
+                <label for="disease">Select Diagnostic Model</label>
+                <div class="select-wrapper">
+                    <select id="disease">
+                        <option value="tb">🫁 Tuberculosis (Chest X-Ray)</option>
+                        <option value="brain">🧠 Brain Tumor (MRI)</option>
+                        <option value="skin">🔬 Skin Cancer (Dermoscopy)</option>
+                        <option value="oct">👁️ Retinal Disease (OCT)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group upload-group">
+                <label for="fileInput">Upload Medical Image</label>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/*">
+                    <div class="upload-placeholder" id="uploadPlaceholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <p>Click to browse or drag image here</p>
+                    </div>
+                    <img id="imagePreview" class="image-preview hidden" alt="Image Preview">
+                </div>
+            </div>
+
+            <button onclick="predict()" id="predictBtn" class="primary-btn">
+                <span>Run Analysis</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+
+            <div id="loading" class="loading-state hidden">
+                <div class="spinner"></div>
+                <p>AI model is analyzing the image...</p>
+            </div>
+
+            <div id="result" class="result-box hidden">
+                <!-- Results injected via JS -->
+            </div>
+        </main>
+
+        <footer>
+            <div class="federated-badge">
+                <span class="pulse"></span>
+                <span>Federated Learning Active</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
