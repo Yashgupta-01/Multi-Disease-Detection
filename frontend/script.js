@@ -41,7 +41,8 @@ async function predict() {
     predictBtn.style.opacity = "0.7";
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/predict/${disease}`, {
+        // Use a relative URL so it works automatically on localhost AND on Render
+        const response = await fetch(`/predict/${disease}`, {
             method: "POST",
             body: formData
         });

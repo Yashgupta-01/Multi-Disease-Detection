@@ -1,7 +1,10 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 from PIL import Image
 import io
+import os
 
 from services.tb_predict import predict_tb
 from services.brain_predict import predict_brain
@@ -27,9 +30,8 @@ app.add_middleware(
 
 VALID_DISEASES = {"tb", "brain", "skin", "oct"}
 
-@app.get("/")
-def home():
-    return {"status": "Multi Disease Detection API is running", "endpoints": ["/predict/tb", "/predict/brain", "/predict/skin", "/predict/oct"]}
+# The frontend directory path relative to this backend script
+FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
 @app.get("/health")
 def health():
@@ -71,3 +73,7 @@ async def predict(disease: str, file: UploadFile = File(...)):
             return predict_oct(image)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+
+# Mount the frontend static files at the root
+# This MUST be placed after all other API routes so it doesn't overwrite them
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
