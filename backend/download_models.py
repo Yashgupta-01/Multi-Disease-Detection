@@ -1,13 +1,13 @@
 import os
 import gdown
 
-# The 4 file IDs provided
-FILE_IDS = [
-    "1tPRUf5-NmPhy3nNuvaGLole-3lRmsk8w",
-    "1yhrB6GP0n-WknuREhtG0VfiTDTFe8v7J",
-    "1W491aguZsTK8cm129iFIytPyYWoAVqn1",
-    "10ccF3Tj5Z_KW34iSsKs1Wy2cRfpTKGwv"
-]
+# Map the exact required filenames to their Google Drive file IDs
+MODELS_TO_DOWNLOAD = {
+    "brain_mri_cnn_v1.pt": "1IrszLYdJFxktvZJOdTwMH9wkBRef7-Gz",
+    "skin_cancer.pt": "10ccF3Tj5Z_KW34iSsKs1Wy2cRfpTKGwv",
+    "oct_cnn.pt": "1yhrB6GP0n-WknuREhtG0VfiTDTFe8v7J",
+    "tb_cnn.pt": "1tPRUf5-NmPhy3nNuvaGLole-3lRmsk8w"
+}
 
 MODEL_DIR = "models"
 
@@ -15,19 +15,25 @@ def download_models():
     if not os.path.exists(MODEL_DIR):
         os.makedirs(MODEL_DIR)
 
-    for file_id in FILE_IDS:
-        url = f"https://drive.google.com/uc?id={file_id}"
-        # We don't specify output name so it takes the original filename from Drive
-        output = os.path.join(MODEL_DIR, file_id) # Temporary name, we will let gdown resolve it
-        print(f"Downloading {file_id}...")
+    for filename, file_id in MODELS_TO_DOWNLOAD.items():
+        output_path = os.path.join(MODEL_DIR, filename)
         
-        # gdown will automatically extract the filename if output is a directory
-        # but to be safe, we let gdown figure out the filename and put it in MODEL_DIR
+        # Skip download if the file already exists (saves time on reboot if persistent disk is used)
+        if os.path.exists(output_path):
+            print(f"✅ {filename} already exists. Skipping download.")
+            continue
+            
+        print(f"📥 Downloading {filename} from Google Drive...")
+        
         try:
-            downloaded_file = gdown.download(id=file_id, output=f"{MODEL_DIR}/", quiet=False)
-            print(f"Successfully downloaded: {downloaded_file}")
+            # We explicitly set the output filename so it ignores the Google Drive name
+            downloaded_file = gdown.download(id=file_id, output=output_path, quiet=False)
+            if downloaded_file:
+                print(f"🎉 Successfully downloaded: {downloaded_file}")
+            else:
+                print(f"❌ Failed to download {filename}.")
         except Exception as e:
-            print(f"Error downloading {file_id}: {e}")
+            print(f"❌ Error downloading {filename}: {e}")
 
 if __name__ == "__main__":
     download_models()
