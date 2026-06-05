@@ -59,10 +59,15 @@ class BrainMRI_CNN(nn.Module):
 
 # ── Load model once at startup ─────────────────────────────────────────────────
 device = torch.device("cpu")
+model = None
 
-model = BrainMRI_CNN()
-model.load_state_dict(torch.load("models/brain_mri_cnn_v1.pt", map_location=device))
-model.eval()
+def get_model():
+    global model
+    if model is None:
+        model = BrainMRI_CNN()
+        model.load_state_dict(torch.load("models/brain_mri_cnn_v1.pt", map_location=device))
+        model.eval()
+    return model
 
 # ── Transform matches training ─────────────────────────────────────────────────
 transform = transforms.Compose([
@@ -83,10 +88,11 @@ def predict_brain(image):
     Returns:
         dict: { disease, prediction, confidence }
     """
+    m = get_model()
     img = transform(image).unsqueeze(0).to(device)
 
     with torch.no_grad():
-        outputs = model(img)
+        outputs = m(img)
         probs   = torch.softmax(outputs, dim=1)
         pred    = torch.argmax(probs).item()
 

@@ -101,10 +101,15 @@ class SkinCancerCNN(nn.Module):
 
 # ── Load model once at startup ─────────────────────────────────────────────────
 device = torch.device("cpu")
+model = None
 
-model = SkinCancerCNN()
-model.load_state_dict(torch.load("models/skin_cancer.pt", map_location=device))
-model.eval()
+def get_model():
+    global model
+    if model is None:
+        model = SkinCancerCNN()
+        model.load_state_dict(torch.load("models/skin_cancer.pt", map_location=device))
+        model.eval()
+    return model
 
 # ── Transform — ImageNet normalization to match training ───────────────────────
 transform = transforms.Compose([
@@ -124,10 +129,11 @@ def predict_skin(image):
     Returns:
         dict: { disease, prediction, confidence }
     """
+    m = get_model()
     img = transform(image).unsqueeze(0).to(device)   # Shape: [1, 3, 224, 224]
 
     with torch.no_grad():
-        outputs = model(img)                          # Logits: [1, 2]
+        outputs = m(img)                          # Logits: [1, 2]
         probs   = torch.softmax(outputs, dim=1)       # Probabilities
         pred    = torch.argmax(probs).item()          # 0 = Benign, 1 = Malignant
 

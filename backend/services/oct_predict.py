@@ -50,10 +50,15 @@ class OCTNet(nn.Module):
 
 # ── Load model once at startup ─────────────────────────────────────────────────
 device = torch.device("cpu")
+model = None
 
-model = OCTNet()
-model.load_state_dict(torch.load("models/oct_cnn.pt", map_location=device))
-model.eval()
+def get_model():
+    global model
+    if model is None:
+        model = OCTNet()
+        model.load_state_dict(torch.load("models/oct_cnn.pt", map_location=device))
+        model.eval()
+    return model
 
 # ── Transform — Normalize was THE missing piece ────────────────────────────────
 transform = transforms.Compose([
@@ -74,10 +79,11 @@ def predict_oct(image):
     Returns:
         dict: { disease, prediction, confidence }
     """
+    m = get_model()
     img = transform(image).unsqueeze(0).to(device)
 
     with torch.no_grad():
-        outputs = model(img)
+        outputs = m(img)
         probs   = torch.softmax(outputs, dim=1)
         pred    = torch.argmax(probs).item()
 

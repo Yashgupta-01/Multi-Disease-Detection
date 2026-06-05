@@ -42,10 +42,15 @@ class TB_CNN(nn.Module):
 
 # ── Load model once at startup (not on every request) ─────────────────────────
 device = torch.device("cpu")
+model = None
 
-model = TB_CNN()
-model.load_state_dict(torch.load("models/tb_cnn.pt", map_location=device))
-model.eval()
+def get_model():
+    global model
+    if model is None:
+        model = TB_CNN()
+        model.load_state_dict(torch.load("models/tb_cnn.pt", map_location=device))
+        model.eval()
+    return model
 
 # ── Transform must EXACTLY match what was used during training ─────────────────
 transform = transforms.Compose([
@@ -64,10 +69,11 @@ def predict_tb(image):
     Returns:
         dict: { disease, prediction, confidence }
     """
+    m = get_model()
     img = transform(image).unsqueeze(0).to(device)
 
     with torch.no_grad():
-        outputs = model(img)
+        outputs = m(img)
         probs   = torch.softmax(outputs, dim=1)
         pred    = torch.argmax(probs).item()
 
