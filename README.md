@@ -5,7 +5,13 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)
 ![Deployment](https://img.shields.io/badge/Deployed_on-Render-black.svg)
 
-An end-to-end, AI-powered diagnostic web application capable of detecting four major diseases from medical imagery using custom-trained convolutional neural networks (CNNs). The system features a modern, responsive frontend, a high-performance FastAPI backend, and integrates concepts of Federated Learning.
+An end-to-end, AI-powered diagnostic web application capable of detecting four major diseases from medical imagery using custom-trained convolutional neural networks (CNNs). The system features a modern, responsive UI and is fully deployed on Render's free tier.
+
+## 🌐 Live Demo
+
+**[Access the Live Application](https://multi-disease-detection-d0je.onrender.com/)**
+
+---
 
 ## 🩺 Supported Diagnostics
 1. **Brain Tumor Detection** (MRI Scans)
@@ -17,7 +23,7 @@ An end-to-end, AI-powered diagnostic web application capable of detecting four m
 
 ## ✨ Key Features
 - **Four Integrated CNN Models**: State-of-the-art accuracy trained via PyTorch.
-- **Lazy Loading Architecture**: Models are instantiated only when called, allowing the entire application to run within extremely strict memory constraints (e.g., Render's 512MB free tier limit) without triggering Out-Of-Memory (OOM) errors.
+- **Lazy Loading Architecture**: Models are instantiated only when called, allowing the entire application to run within extremely strict memory constraints (e.g., Render's 512MB free tier limit).
 - **Premium Glassmorphism UI**: Beautiful, medical-themed frontend with live image preview, loading states, and dynamic confidence progress bars.
 - **Federated Learning Ready**: Exposes `/federated/info` and `/federated/status` endpoints to log global model hashes and training rounds simulated via FedAvg.
 - **Full-Stack Single-Server Deployment**: FastAPI natively mounts and serves the static frontend, meaning the entire stack runs flawlessly on a single web service.
@@ -98,6 +104,6 @@ Render will automatically install the environment, run the python script to down
 ---
 
 ## 🔬 Federated Learning Context
-This application integrates the results of a **Federated Learning** simulation. In the `/Model` directory, Jupyter notebooks demonstrate how these CNNs can be trained locally on edge devices (simulated clients) and aggregated using the `FedAvg` algorithm. This ensures raw patient imagery never leaves the hospital, preserving patient privacy while still contributing to a highly accurate global model.
+This application integrates the results of a **Federated Learning** simulation. In the `/Model` directory, Jupyter notebooks demonstrate how these CNNs can be trained locally on edge devices (simulated across multiple clients), then aggregated into a global model using the FedAvg algorithm.
 
 The API endpoints `/federated/info` and `/federated/status` provide transparency into this process, outputting the MD5 hash of the global models and the total number of aggregation rounds completed.
